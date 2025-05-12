@@ -66,7 +66,7 @@ endif
 $(info DUMER_EPS = $(DUMER_EPS))
 
 all: \
-libisd.so bkz.so MarquezCorbella.so
+libisd.so bkz.so
 
 libisd.so:
 	cd isd; cmake -B build -DDUMER_L=$(DUMER_L) -DDUMER_P=$(DUMER_P) -DDUMER_EPS=$(DUMER_EPS) -DDUMER_DOOM=0 -DDUMER_LW=1 && cmake --build build/
@@ -82,21 +82,9 @@ bkz.pyx: bkz.sage.py
 
 bkz.sage.py: bkz.sage
 	$(SAGE) -preparse bkz.sage
-	
-MarquezCorbella.so: MarquezCorbella.c
-	$(CC) -o MarquezCorbella.so MarquezCorbella.c
-
-MarquezCorbella.c: MarquezCorbella.pyx
-	$(CYTHON) -3 MarquezCorbella.pyx
-
-MarquezCorbella.pyx: MarquezCorbella.sage.py
-	cp MarquezCorbella.sage.py MarquezCorbella.pyx
-
-MarquezCorbella.sage.py: MarquezCorbella.sage
-	$(SAGE) -preparse MarquezCorbella.sage
 
 clean:
-	rm -f bkz.so bkz.c bkz.pyx MarquezCorbella.so MarquezCorbella.c MarquezCorbella.pyx
+	rm -f bkz.so bkz.c bkz.pyx
 	for f in in tests/*test_sage.py; do\
 		rm -f "$$f";\
 	done
